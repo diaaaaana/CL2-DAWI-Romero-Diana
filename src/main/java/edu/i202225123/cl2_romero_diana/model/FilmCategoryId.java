@@ -7,8 +7,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
-@Setter
-@Getter
+
 @Embeddable
 @NoArgsConstructor
 public class FilmCategoryId implements Serializable {
@@ -20,4 +19,19 @@ public class FilmCategoryId implements Serializable {
         this.filmId = filmId;
     }
 
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Integer getFilmId() {
+        return filmId;
+    }
+
+    public void setFilmId(Integer filmId) {
+        this.filmId = filmId;
+    }
 }

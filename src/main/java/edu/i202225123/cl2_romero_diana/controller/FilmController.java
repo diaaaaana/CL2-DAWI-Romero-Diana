@@ -30,23 +30,7 @@ public class FilmController {
         return "film-detail";
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*@GetMapping("/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String edit(@PathVariable Integer id,Model model){
         FilmDetailDto film=filmService.findById(id);
         model.addAttribute("film",film);
@@ -56,14 +40,20 @@ public class FilmController {
     @PostMapping("/edit-confirm")
     public String editConfirm(@ModelAttribute("film") FilmDetailDto filmDetailDto,Model model){
         filmService.update(filmDetailDto);
-        return "redirect:/film/list";
+        return "redirect:/film/lista";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Integer id){
         filmService.delete(id);
-        return "redirect:/film/list";
+        return "redirect:/film/lista";
     }
+
+
+
+
+
+
     @GetMapping("/create")
     public String create(){
         return "film-new";
@@ -73,5 +63,5 @@ public class FilmController {
     public String createNewFilm(FilmDetailDto filmDetailDto){
         filmService.save(filmDetailDto);
         return "redirect:/film/list";
-    }*/
+    }
 }
