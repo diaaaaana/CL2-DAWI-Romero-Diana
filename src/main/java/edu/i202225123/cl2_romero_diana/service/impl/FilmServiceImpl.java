@@ -30,6 +30,8 @@ public class FilmServiceImpl implements FilmService {
 
     @Override
     public List<FilmDto> findAll() {
+        System.out.println("_____________________________________________________");
+        System.out.println("_____________________________________________________");
         List<FilmDto> films= new ArrayList<>();
             Iterable<Film> iterable=filmRepository.findAll();
             iterable.forEach( film ->{
@@ -40,6 +42,9 @@ public class FilmServiceImpl implements FilmService {
                         film.getRentalRate()
                 );
                 films.add(filmDto);
+                //para mostrar la lista en consola y llamar datos de cache
+                String message=String.format("%s-%s;",film.getFilmId(),film.getTitle());
+                System.out.print(message);
             });
         return films;
     }
