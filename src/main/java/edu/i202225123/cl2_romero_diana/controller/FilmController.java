@@ -49,19 +49,14 @@ public class FilmController {
         return "redirect:/film/lista";
     }
 
-
-
-
-
-
     @GetMapping("/create")
     public String create(){
-        return "film-new";
+        return "film-create";
     }
 
     @PostMapping("/create-film")
     public String createNewFilm(FilmDetailDto filmDetailDto){
         filmService.save(filmDetailDto);
-        return "redirect:/film/list";
+        return "redirect:/film/lista";
     }
 }

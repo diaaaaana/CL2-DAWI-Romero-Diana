@@ -3,7 +3,12 @@ package edu.i202225123.cl2_romero_diana.service.impl;
 import edu.i202225123.cl2_romero_diana.dto.FilmDetailDto;
 import edu.i202225123.cl2_romero_diana.dto.FilmDto;
 import edu.i202225123.cl2_romero_diana.model.Film;
+import edu.i202225123.cl2_romero_diana.model.FilmCategory;
+import edu.i202225123.cl2_romero_diana.model.FilmCategoryId;
+import edu.i202225123.cl2_romero_diana.model.Language;
+import edu.i202225123.cl2_romero_diana.repository.FilmCategoryRepository;
 import edu.i202225123.cl2_romero_diana.repository.FilmRepository;
+import edu.i202225123.cl2_romero_diana.repository.LanguageRepository;
 import edu.i202225123.cl2_romero_diana.service.FilmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +23,10 @@ public class FilmServiceImpl implements FilmService {
 
     @Autowired
     FilmRepository filmRepository;
+    @Autowired
+    LanguageRepository languageRepository;
+    @Autowired
+    FilmCategoryRepository filmCategoryRepository;
 
     @Override
     public List<FilmDto> findAll() {
@@ -97,6 +106,38 @@ public class FilmServiceImpl implements FilmService {
 
     @Override
     public Boolean save(FilmDetailDto filmDetailDto) {
-        return null;
+        try{
+            //obtiene el lenguaje con el ID ingresado dede la vista
+            Optional<Language> language = languageRepository.findById(filmDetailDto.languageId());
+            if (language.isEmpty()) {
+                throw new IllegalArgumentException("Language not found");
+            }
+            //guardamos en el objeto todos los datos enviados
+            Film film=new Film();
+            film.setTitle(filmDetailDto.title());
+            film.setDescription(filmDetailDto.description());
+            film.setReleaseYear(filmDetailDto.releaseYear());
+            film.setLanguage(language.get());
+            film.setRentalDuration(filmDetailDto.rentalDuration());
+            film.setRentalRate(filmDetailDto.rentalRate());
+            film.setLength(filmDetailDto.length());
+            film.setReplacementCost(filmDetailDto.replacementCost());
+            film.setRating(filmDetailDto.rating());
+            film.setSpecialFeatures(filmDetailDto.specialFeatures());
+            film.setLastUpdate(new Date());
+            Film savedFilm=filmRepository.save(film);
+            //obtiene los datos en categoriaFiln
+            FilmCategoryId filmCategoryId = new FilmCategoryId(filmDetailDto.categoryId(), savedFilm.getFilmId());
+            FilmCategory filmCategory = new FilmCategory();
+            filmCategory.setId(filmCategoryId);
+            filmCategory.setFilm(savedFilm);
+            filmCategory.setLastUpdate(new Date());
+            //guarda la categoriaFilm
+            filmCategoryRepository.save(filmCategory);
+            return true;
+        }catch (Exception e){
+            e.getStackTrace();
+            return false;
+        }
     }
 }
